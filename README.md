@@ -1,10 +1,13 @@
 # 2.2 - Recording Changes to the Repository
 
+* _NOTE: Having a `checkout` on your local machine -> working copy of all files in a Git repository_
 * Typically, you'll want to start making changes and committing snapshots of those changes into your repository each time the project reaches a state you want to record.
 * Each file in your working directory can be in one of two states:
 	* **Tracked** - Files that were in the last snapshot, as well as any newly staged files; they can be unmodified, modified, or staged. Trackes files are files that Git knows about.
 	* **Untracked** - Everything other than tracked files - Any files in your working directory that were not in your last snapshot and not in your staging area. Git won't start including it in your commit snapshots until you explicitly tell it to do so.
 * As you edit files Git seems them as modified, because you've changed them since your last commit. As you work, you selectively stages these  modified files and then commit all those staged changes, and the cycle repeats.
+
+![image](https://github.com/rsing148/CommunityClassroom-Git/assets/127006601/41a407bb-45fb-4bc2-b53e-d2bde7f91114)
 
 ## Checking the Status of your Files
 
@@ -28,13 +31,42 @@ If you run status command again, you can see that your README file is now tracke
 
 ## Staging Modified Files
 
-Lets change a file that was already tracked. If you change a previously tracked file called CONTRIBUTING.md and then run your git status command again, you will see the file appears unders a section "Changes not staged for commit" - which means that a file that is tracked has been modified in the working directory but not yet staged. To stage it, you run the `git add` command.  After staging the file if we make another change to the same file, it will list as both staged and unstanged. It turns out that Git stages a file exactly as it wis when you run the `git add` command. If you 
+Lets change a file that was already tracked. If you change a previously tracked file called CONTRIBUTING.md and then run your git status command again, you will see the file appears unders a section "Changes not staged for commit" - which means that a file that is tracked has been modified in the working directory but not yet staged. To stage it, you run the `git add` command.  After staging the file if we make another change to the same file, it will list as both staged and unstanged. It turns out that Git stages a file exactly as it wis when you run the `git add` command. If you commit now, the version of `CONTRIBUTING.md` as it was when you last ran the `git add` command is how it will go into the commit, not the version of the file as it looks in your working directory when you run `git commit`. If you modify a file after you run `git add`, you have to run `git add` again to stage the latest version fo the file.
 
+## Short Status
 
+* `git status -s` command shows changes in more compact way. The output has 2 columns - The left-hand column indicates the status of the staging area and the right-hand column indicates the status of the working tree.
 
+* Symbols denote:
+	* `??` - Untracked files
+	* `A` - files that have been added to staging area
+ 	* `M` - Modifid files
+    * `MM` - Files that have been staged and unstaged changes
 
+## Ignoring File
 
+* For files which you don't want Git to automatically add or even show as being untracked (such as log files or files produced by the build system - You can create afile listing patterns to match them names `.gitignore`.
+* Rules for the patterns you can pit
 
+## Committing Your Changes
+
+* Anything that is unstaged (any files you have created or modified that you haven't run `git add` on since you edited them) won't go into this commit. They will stay as modified files on your disk.
+* Type `git commit` would open an editor of choice and will show a default template of a commit message, which is commented out and will be ignored (using #). You can add your message after this, and keep this intact so that it will help you remember what you're committing. You can put `-v` option to the `git commit` command for add the diff of your change in the editor.
+* You can use `-m` flag with `commit` command so that you can type your commit message inline with `commit` command.
+
+```
+$ git commit -m "Story 182: Fix benchmarks for speed
+```
+
+* Everytime you perform a commit, you are recording a snapshot of your project 
+
+## Skipping the Staging Area
+
+* Adding a `-a` option to the `git commit` command makes Git automatically stage every file that is already tracked before doing the commit, letting you skip the `git add` part
+  
+## Removing Files
+
+* 
 
 
 
