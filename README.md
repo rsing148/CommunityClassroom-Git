@@ -46,11 +46,60 @@ Lets change a file that was already tracked. If you change a previously tracked 
 ## Ignoring File
 
 * For files which you don't want Git to automatically add or even show as being untracked (such as log files or files produced by the build system - You can create afile listing patterns to match them names `.gitignore`.
-* Rules for the patterns you can pit
+
+* Rules for the patterns you can put in the `.gitignore` file are :
+
+	* Blank line(s) are starting with `#` are ignored.
+	* Standard glob patterns work, and will be applied recursively throughout the entire working tree.
+	* You can start patterns with a forward slash (`/`) to avoid recursively
+	* You can end patterns with a forward slash (`/`) to specify a directory
+	* You can negate a pattern by starting it with an exclamation point (`!`).
+
+* Glob patterns are simplified regular expressions that shells use. 
+
+	* An asterisk (`*`) matches zero or more characters
+	* `[abc]` matches any character inside the brackets (in this case a, b, or c)
+	* `?` - matches a single character
+	* Brackets enclosing characters separated by a hyphen (`[0-9]`) matches any character between them (in this case 0 through 9).
+	* You can use 2 * to match nested directories (`a/**/z` would match `a/z`, `a/b/z`, `a/b/c/z` and so on).
+
+	Its is also possible to have additional `.gitignore` files in subdirectories of tthe repository. The rules in these nested `.gitignore` files apply only to the files under the directory where they are located. 
+
+## Viewing Your Staged and Unstaged Changes
+
+* When you wnat to know exactly what you changed, not just which files were changed - you can use the `git diff` command. 
+
+* It is used to get information about:
+
+	* What have you changed but not yet staged?
+	* What have you staged that you are about to commit
+
+* `git status` answers those questions very generally by listing the file names, `git diff` shows you the exact lines added and removed - the patch.
+
+* To see what you've changed but not yet staged, type `git diff` with no argument
+
+```
+$ git diff
+```
+
+The command compares what is in your working directory with what is in your staging area. The result tell you the chagnes you've made that you haven't yet staged.
+
+* If you want to see what you've staged that will go into your next commit use the command `git diff --staged`. This command compares your staged changed to your last commit.
+
+```
+$ git diff staged
+```
+
+* `git diff` shows you only the changes that are still unstaged, not the changed made since your last commit. If you've staged all of your changes, it will give no output.
+
+* You can also use `git diff` to see the changes in the file that are staged and the changes that are unstaged. 
+
+* You can run `git difftool` instead of `git diff` to view any diffs in software like vimdiff.
 
 ## Committing Your Changes
 
 * Anything that is unstaged (any files you have created or modified that you haven't run `git add` on since you edited them) won't go into this commit. They will stay as modified files on your disk.
+
 * Type `git commit` would open an editor of choice and will show a default template of a commit message, which is commented out and will be ignored (using #). You can add your message after this, and keep this intact so that it will help you remember what you're committing. You can put `-v` option to the `git commit` command for add the diff of your change in the editor.
 * You can use `-m` flag with `commit` command so that you can type your commit message inline with `commit` command.
 
@@ -66,16 +115,41 @@ $ git commit -m "Story 182: Fix benchmarks for speed
   
 ## Removing Files
 
-* 
+* To remove a file from Git, you have to remove it from your tracked files and then commit. This can be done using `git rm` command, and also removed the file from your working directory so you don't see it as an untracked file the next time around. 
 
+* If you simply remove the file from your working directory, it shows up under the "Changes not staged for commit" (unstaged) area of `git status`.
 
+* But if you run `git rm` it stages the file's removal. The next time you commit, the file will be gone and no longer tracked. If you modifed the file or had already added it to the staging area, you much force the removal with the `-f` option. 
 
+* You may want to keep the file on your hard drive but not have Git track it anymore. This is useful if you forget to add something to your `.gitignore` file and accidentally staged it. To do this, use the `--cached` option:
 
+```
+$ git rm --cached README
+```
 
+* You can pass files, directories, and file-glob patterns to the `git rm` command. 
 
+```
+$ git rm log/\*.log
+```
 
+This command removes all files that the `.log` extension in the `log/` directory. (Backslash (`\`) in front of the `*`).
 
+## Moving Files
 
+* If you want to rename a file in Git you can run 
+
+```
+$ git mv file_from file_to
+```
+
+This is equivalent to running something like:
+
+```
+$ mv file_from file_to
+$ git rm file_from
+$ git add file_to
+```
 
 # 2.3 - Viewing the Commit History
 `git log` - To view the several commits made. By default with no arguments it will list the commits made in that repository in reverse chronological order (most recent commits will show up first) along with the SHA-1 checksum, the author's name and email, the date written and the commit message
