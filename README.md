@@ -1,3 +1,7 @@
+# **TABLE OF CONTENTS**
+
+#
+
 # 2.2 - Recording Changes to the Repository
 
 * _NOTE: Having a `checkout` on your local machine -> working copy of all files in a Git repository_
