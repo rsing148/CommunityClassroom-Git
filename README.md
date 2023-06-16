@@ -263,26 +263,45 @@ _NEW METHOD_
 $ git restored --staged <filename>
 ```
 
-# Working with Remotes
+# 2.5 - Working with Remotes
 
-1. Remote Repositories are versions of your project that are hosted on the Internet or network somewhere with read-only or read-write for you. 
-2. Collaborating with others involve managing these remote repositories and pushing and pulling data to and from then when you need to share work.
+* Remote Repositories are versions of your project that are hosted on the Internet or network somewhere with read-only or read-write for you. 
 
-**SHOWING YOUR REMOTES**
-<code>git remote</code> - To see which remote servers you have configured. It returns the list of shortnames of each remote handle you have specified.
-(If you have cloned your repository, you should at least see <code>origin</code> - that is the default name Git gives to the server you cloned from. <code>git clone</code> adds this implicitly)
-```
-$ git remote
-```
+## Showing your Remotes
 
-<code>-v</code> - Shows the URL that Git has stored for the shortname to be used when reading and writing to that remote. 
+* `git remote` - To see which remote servers you have configured. It lists the shortnames of each remote handle you've specified. If you've cloned your repository, you should at least see `origin` - that is the default name Git gives to the server you cloned from.
+
+* `-v` option - Shows you all the URLs that Git has stored for the shortname to be used when reading and writing to that remote, or all the URLs in case of multiple remotes
+
 ```
 $ git remote -v
 ```
 
-**ADDING REMOTE REPOSITORIES**
-`git remote add <shortname> <url>` - To add a new remote Git repository as a shortname you can reference easily
-```
-git remote add pb https://github.com/paulboone/ticgit
-```
+## Adding Remote Repositories
+
+* `git remote add <shortname> <url>` - To add a new remote Git repository as a shortname you can reference easily
+
+## Fetching and Pulling from your Remotes
+
+* `git fetch <remote>` - Get all the data that the remote project has but you don't have yet. After you do this, you should have references to all the branches from that remote. 
+
+* If you clone a repository, the command automatically adds that remote repository under the name 'origin'. So `git fetch origin` fetches any new work that has been pushed to that server since you cloned (or last fetched from) it. It only downloads the data to your local repository - it doesn't automatically merge it with any of the work or modify what you're currently working on.
+
+* If your current branch is set up to track a remote branch, you can use `git pull` command to automatically fetch and then merge that remote branch into your current branch. By default, the `git clone` comand automatically sets up your local `master` branch to trach the remote `master` branch on the server you cloned from. Running `git pull` generally fetches data from the server you originally cloned from and automatically tries to merge it into the code you're currently working on.
+
+## Pushing to your Remotes
+
+* When you have your project that you want to share, you have to push it upstream. The command is `git push <remote> <branch>`
+
+* This command only works if you have cloned from a server to which you have write access and if nobody has pushed in the meanwhile. If you and someone else clone at the same time and they push upstream and then you push upstream, your push will be rejected. You will have to fetch their work first and incorporate it in yours before you will be allowed to push. 
+
+## Inspecting a Remote
+
+* `git remote show <remote>` - Show information about a particular remote. It lists the URL for the remote repository as well as the tracking branch information. If you are on the master branch and you run `git pull`, it will automatically merge the remote's `master` branch into the local one after it has been fetched. It also lists all the remote references it has pulled down. It also shows which branch is automatically pushed to when you run `git push` while on certain branches. 
+
+# Renaming and Removing Remotes
+
+* `git remote rename <original_name> <new_name>` - Rename a remote's shortname from original_name to new_name.
+
+* `git remote rm <shortname>` - Remove a remote shortname 
 
