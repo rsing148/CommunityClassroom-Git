@@ -400,3 +400,55 @@ $ git merge iss53
 
 * After staging your merge conflict resolutions, you can type `git commit` to finalize the merge commit.
 
+# Branch Management
+
+* `git branch` - Get a list of your current branches
+
+`*` character prefixes the branch that you are currently checked out to (that is, the branch the `HEAD` points to). This means if you commit at this point, that branche will be moved forward with you new work. 
+
+* `git branch -v` - See the last commit on each branch
+
+* `--merged` and `--no-merged` - Filter the list of branches to the ones which have or have not been merged yet into the branch that you are currently on. If you run `git branch --merged`, the list of branches without `*` prefix are generally fine to delete because you have already incorporated their work into another branch, so you are not going to lose anything.
+
+* Trying to delete a branch in the list provided by `git branch --no-merged` will fail and will have to be forced because you will lose the work done on this branch. 
+
+## Changing a Branch Name
+
+* To rename a branch locally run `git branch --move` command
+
+```
+$ git branch --move bad-branch-name corrected-branch-name
+```
+
+* To see the corrected branch on the remote, push it:
+
+```
+$ git push --set-upstream origin corrected-branch-name
+```
+
+* The branch with the bad name is also present if you run `git branch --all`, but you can delete it
+
+```
+$ git push origin --delete bad-branch-name
+```
+
+## Changing the master branch name
+
+* To rename your local `master` branch into `main`, run
+
+```
+$ git branch --move master main
+```
+
+* To let others see the new `main` branch, you need to push it to the remote. 
+
+``` 
+$ git push --set-upstream origin main
+```
+
+* After you make certain that the `main` branch performs just as the `master` branch, you can delete the `master` branch
+
+```
+$ git push origin --delete master
+```
+
