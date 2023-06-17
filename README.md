@@ -11,10 +11,7 @@
 	* [2.3 - Viewing the Commit History](#viewing-the-commit-history)
 	* [2.4 - Undoing Things](#undoing-things)
 	* [2.5 - Working with Remotes](#working-with-remotes)
-
-* [Recording Changes to the Repos]
-* [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
-
+* [3 - Git Branching](#git-branching)
 
 
 
@@ -472,18 +469,13 @@ $ git push origin master
 
 * `git remote rm <shortname>` - Remove a remote shortname 
 
-
-
-
-
-# CHAPTER 3 - GIT BRANCHING
+# GIT BRANCHING
 
 # Branches in a Nutshell
 
 * Branching means you diverge from the main line of development and continue to work without messing with that main line. 
 
 * When you make a commit, Git stores a commit object that contains a pointer to the snapshot of the content you staged. This object also contains the author's name and email address, the message that you typed, and pointers to the commit or commits that directly came before this commit (parent). 
-
 	* Let's say you have a directory containing three files, and you stage them all and commit. Stagin the file computes a checksum for each one (the SHA-1 hash), stores the version of each file in the Git repository (blobs), and adds that checksum to the staging area.
 	* When you create the commmit by running `git commit`, Git checksums each subdirectory (in this case, the root project directory), and stores them as a tree object in the Git repository. Git then creates a commit object that has the metadata and a pointer to the root project tree so it can re-create that snapshot when needed. The Git repository now has 5 objects: three blobs (each representing the contents of one of the three files), one tree that lists the contents of the directory and specifies which file names are stored as which blobs, and one commit with the pointer to that root tree and all the commit metadata 
 	
@@ -682,4 +674,114 @@ $ git checkout -b serverfix origin/serverfix
 ## Tracking Branches
 
 * Checking out a local branch from a remote tracking branch automatically creates what is called a "tracking branch" (and the branch it tracks is called an "upstream branch"). Tracking branches are local branches that have a direct relationship to a remote branch. If you are on a tracking branch and type `git pull`, Git automatically knows which server to fetch from and which branch to merge in.
+
+
+
+
+
+
+
+
+
+# GIT TOOLS
+
+# Revision Selection
+
+* Git allows you to refer to a single commit, set of commits, or range of commits in a number of ways.
+
+## Single Revisions
+
+* Refer to any single commit by its full 40-character SHA-1 hash
+
+## Short SHA-1
+
+* First few characters of the SHA-1 hash is enough to refer to a commit, as long as that partial hash is at least 4 characters long and unambiguous (no other object in the object database can have a has that begins with the same prefix).
+
+* Generally 8 to 10 characters are more than enough to be unique within a project. 
+
+* If you want to inspect which commits have a hash value that begins with `1c002dd`
+```
+$ git show 1c002dd
+```
+
+* If you pass `--abbrev-commit` to the `git log` command, the output will use shorter values but keep them unique; it defaults to using seven characters but makes them longer if necessary to keep the SHA-1 unambiguous
+```
+$ git log --abbrev-commit --pretty=oneline
+```
+
+## Branch References
+
+* To refer to a particular commit that is at the tip of a branch, we can simply use the branch name in any Git command that expects a reference to a commit. For eg, if you want to examine the last commit object on a branch, assuming `topic1` branch ponts to commit `ca82a6d`, the following commands are equivalent:
+```
+$ git show ca82a6d
+$ git show topic1
+```
+
+## RefLog Shortnames
+
+* Git keeps a "reflog" - a log of where your HEAD and branch references have been for the last few months. You can see your reflog by using `git reflog`
+```
+$ git reflog
+```
+
+* If you want to see the fifth prior value of the HEAD of your repository, you can use the `@{5}` reference
+```
+$ git show HEAD@{5}
+```
+
+# Stashing and Cleaning
+
+* When you have been working on part of your project, things are in a messy state and you want to switch branches for a bit of work on something else. But you don't want to do a commit of half-dome work just so you can get back to this point later. `git stash` comes to the rescue.
+
+* Stashing takes the dirty state of your working directory - that is, your modified tracked files and staged changes - and saves it on a stack of unfinished changes that you can reapply at any time (even on a different branch).
+
+## Stashing your work
+
+* If you work on a project and start working on a couple of files, and possibly stage one of the changes. Now when you want to switch branches, you don't want to commit what you've been working on yet, so you'll stash the changes. To push a new stash onto your stack, run `git stash push`
+```
+$ git stash push
+```
+
+* It will make your working directory clean. Run `git status` to verify that.
+
+* To see which stashes you have stored, you can use `git stash list`
+```
+$ git stash list
+```
+
+* You can reapply the stash using the command `git stash apply`. If you want to apply one of the older stashed, you can specify it by naming it (if you don't specify a stash, Git assumes the most recent stash and tries to apply it):
+```
+$ git stash apply stash@{2}
+```
+
+* Having a clean working directory and applying it on the same branch aren't necessary to successfully apply a stash. You can save a stash on one branch, switch to another branch later, and try to reapply the changes. You can also have modified and committed files in your working directory when you apply a stash - Git gives you merge conflicts if anything no longer applies cleanly. The changes to your files will be reapplied, but the file you staged before wasn't restaged. To do that, you must run the `git stash apply` command with a `--index` option to tell the command to try to reappply the staged changes. 
+```
+$ git stash apply --index
+```
+
+* The `apply` option only tries to apply the stashed work - you continue to have it on your stack. To remove it, you can run `git stash drop` with the name of the stash to remove
+```
+$ git stash drop stash@{3}
+```
+
+* You can also run `git stash pop` to apply the stash and then immediately drop it from your stack.
+
+## Creative Stashing
+
+* By default `git stash` will stash only modified an staged tracked files. If you specify `--include-untracked`, Git will include untracked files in the stash being created. However, including untracked files in the stash will not include explicitly ignored files, to additionally include ignored files use `--all`.
+```
+$ git stash --included-untracked --all
+```
+
+* If you specify the `--patch` flag, Git will not stash everything that is modified but will instead prompt you interactively which of the changes you would like to stash and which you would like to keep in your working directory
+```
+$ git stash --patch
+```
+
+## Creating a Branch from a Stash
+
+* If you stash some work, leave it there for a while, and continue on the branch from which you stashed the work, you may have a problem reapplying the work. If the apply tries to modify a file that you've since modified, you'll get a merge conflict and will have to try to resolve it. If you want an easier way to test the stashed changes again, you can run `git stash branch <new branchname>` which creates a new branch for you with your selected branch name, checks out the commit you were on when you stashed your work, reapplies your work there, and then drops the stash if it applies successfully
+```
+$ git stash branch testchanges
+```
 
