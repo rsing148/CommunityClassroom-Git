@@ -155,9 +155,9 @@ $ git config user.name
 
 # Getting Help
 
-* `git help <verb>` - You can get the comprehensive manual page (manpage) help for any of the Git commands by:
+* `git <verb> --help` - You can get the comprehensive manual page (manpage) help for any of the Git commands by:
 ```
-$ git help config
+$ git config --help
 ```
 
 * If you just need a quick refresher on the available options of a Git command, use `-h` option
