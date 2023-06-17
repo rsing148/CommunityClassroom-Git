@@ -5,6 +5,8 @@
 	* [1.2 - What is Git?](#what-is-git)
 	* [1.3 - First Time Git Setup](#first-time-git-setup)
 	* [1.4 - Getting Help](#getting-help)
+* [2 - Git Basics](#git-basics)
+	* [2.1 - Getting a Git Repository](#getting-a-git-repository)
 * [Recording Changes to the Repos]
 * [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
 
@@ -165,8 +167,38 @@ $ git config --help
 $ git add -h
 ```
 
+# GIT BASICS
 
+# Getting a Git Repository
 
+## Getting a Git Respository
+
+* You can obtain a Git Repository in one of two ways:
+	* You can take a local directory that is currently not version control, and turn it into a Git repository
+	* You can `clone` an existing Git repository from elsewhere.
+
+### Initializing a Repository in an Existing Directory
+
+* If you have a project directory that is currently not under version control and you want to start controlling it with Git, you first need to go to that project's directory and type:
+```
+$ git init
+```
+
+* This creates a new subdirectory named `.git` that contains all of your necessary repository files - a Git repository skeleton. At this point, nothing in your project is tracked yet. If you want to start version-controlling existing files (as opposed to an empty directory), you should probably begin tracking those files and an initial commit. You can accomplish this with a few `git add` commands that specify the files you want to track, followed by a `git commit`.
+
+### Cloning an Existing Respository
+
+* `git clone <url>` - If you want to get a copy of an existing Git repository - for example, a project you'd like to contribute to. Instead of getting just a working copy, Git receives a full copy of nearly all data that the server has. Every version of every file for the history of the project is pulled down by default when you run `git clone`. 
+```
+$ git clone https://github.com/libgit2/libgit2
+```
+
+* This creates a directory called `libgit2`, initializes a `.git` directory inside it, pulls down all the data for that repository, and checks out a working copy of the latest version. If you want to clone the repository into a directory named something other than `libgit2`, you can specify the new directory name as an additional argument:
+```
+$ git clone https://github.com/libgit2/libgit2 mylibgit
+```
+
+* Git has a number of different transfer protocols you can use (HTTPS, SSH).
 
 
 
