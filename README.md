@@ -7,6 +7,7 @@
 	* [1.4 - Getting Help](#getting-help)
 * [2 - Git Basics](#git-basics)
 	* [2.1 - Getting a Git Repository](#getting-a-git-repository)
+	* [2.2 - Recording Changes to the Repository](#recording-changes-to-the-repository)
 * [Recording Changes to the Repos]
 * [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
 
