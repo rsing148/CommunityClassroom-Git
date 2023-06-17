@@ -1,6 +1,62 @@
 # **TABLE OF CONTENTS**
 
-#
+* [1 - Getting Started](#chapter-1---getting-started)
+	* [1.1 - About Version Control](#11---about-version-control)
+* [Recording Changes to the Repos]
+* [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
+
+
+
+
+
+# CHAPTER 1 - GETTING STARTED
+
+# 1.1 - About Version Control
+
+* Version control is a system that records changes to a file or set of files over time so that you can recall specific version later. 
+
+## Local Version Control Systems
+
+* Brute Force Approach - 
+	* Time-stamped directories are set in place and files are copied into them. 
+	* Pros:
+		* It is a simple approach
+	* Cons:
+		* Error prone as you might forget which directory you are in and accidentally write to the wrong file
+		* Copy files you didn't mean to.
+
+* Local Version Control System - Simple database that kept all the changes to files under revision control. For example, RCS (kept patch sets (difference between files) in a special format on disk so as to re-create what any file looked like at any point of time by adding up all the patches).
+	* Cons:
+		* Single point of failure - Since the entire history of the project is in a single place, you risk losing everything.
+
+![Local Version Control Diagram](image-5.png)
+
+## Centralized Version Control Systems
+
+* People found the need to collaborate with developers on other systems. For example, CVS, Subversion, Peforce.
+
+* They have a single server that contains all the versioned files, and a number of clients that check out files from that central place. 
+
+* Pros:
+	* Everyone knows to a certain degree what everyone else on the project is doing.
+	* Administrators have fine-grained control over who can do what
+	* Easier to administer a CVCS than to deal with local databases on every client.
+
+* Cons:
+	* Single point of failure that the centralized server represents - If that server goes down for an hour, then during that hour nobody can collaborate at all or save versioned changes to anything they are working on. 
+	* If the hard disk the central database is on become corrupted, and proper backups are not kept, you lose absolutely everything.
+
+![Centralized Version Control Diagram](image-6.png)
+
+## Distributed Version Control System
+
+* Clients don't just check out the latest snapshot of the files, rather they fully mirror the repository, including its full history. 
+
+* Pros:
+	* If any server dies, and these system were collaborating via that server, any of the client repositories can be copied back up to the server to restore it. Every clone is really a full backup of all the data. For example, Git, Mercurial, Bazaar.
+	* Deal well with having several remote repositories they can work with, so you can collaborate with different groups of people in different ways simultaneously within the same project. This allows you to set up several types of workflows that aren't possible in centralized systems, such as hierarchical models.
+
+![Distributed Version Control Diagram](image-7.png)
 
 # 2.2 - Recording Changes to the Repository
 
