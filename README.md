@@ -1,8 +1,11 @@
 # **TABLE OF CONTENTS**
 
-#
 
-# 2.2 - Recording Changes to the Repository
+* [2.2	Recording Changes to Repository](#Chapter2.2)
+* [3.5	Remote Branches](#Chapter3.5)
+
+
+# 2.2 - Recording Changes to the Repository {#Chapter2.2}
 
 * _NOTE: Having a `checkout` on your local machine -> working copy of all files in a Git repository_
 * Typically, you'll want to start making changes and committing snapshots of those changes into your repository each time the project reaches a state you want to record.
@@ -466,7 +469,7 @@ $ git push origin --delete master
 
 * A topic branch is a short-lived branch that you create and use for a single particular feature or related work. For eg. the `iss53` and `hotfix` branches. You did few commits on them and directly after merging them into your main branch. This technique allows you to context-switch quickly and completely.
 
-# Remote Branches
+# 3.5 - Remote Branches{#Chapter3.5}
 
 * Remote references are references (pointers) in your remote repositoreis, including branches, tags and so on. You can get a full list of remote references explicitly with `git ls-remote <remote>` or `git remote show <remote>` for remote branches as well as more information. 
 
