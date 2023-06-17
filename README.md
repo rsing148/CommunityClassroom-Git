@@ -9,6 +9,8 @@
 	* [2.1 - Getting a Git Repository](#getting-a-git-repository)
 	* [2.2 - Recording Changes to the Repository](#recording-changes-to-the-repository)
 	* [2.3 - Viewing the Commit History](#viewing-the-commit-history)
+	* [2.4 - Undoing Things](#undoing-things)
+	
 * [Recording Changes to the Repos]
 * [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
 
@@ -388,20 +390,18 @@ $ git log -S function_name
 $ git log -- path/to/file
 ```
 
-# 2.4 Undoing Things
+# Undoing Things
 
 * If you make a commit too early and possibly forget to add some files, or you mess up your commit message, and you want to redo that commit, make the additional changes you forgot, stage them, and commit again using the `--amend` option - This command takes your staging area and uses it for the commit. If you've made no changes since your last commit (for example, you run the this command immediately after your previous commit), then your snapshot will look exactly the same and all you'll change is your commit message. 
-
 ```
 $ git commit --amend
 ```
 
-Only amend commits that are still local and have not been pushed somewhere. Amending previously pushed commits and force pushing the branch will cause problems for your collaborators.
+* Only amend commits that are still local and have not been pushed somewhere. Amending previously pushed commits and force pushing the branch will cause problems for your collaborators.
 
 ## Unstaging a Staged File
 
 * Let's say you've changed two files and want to commit them as two separate changes, but you accidentally type `git add *` and stage both of them. To unstage a file (file will become just a modified file) you can run the command:
-
 _OLD METHOD_
 ```
 $ git reset HEAD <filename>
@@ -415,7 +415,6 @@ $ git restore --staged <filename>
 ## Unmodifying a Modified File
 
 * If you don't want to keep your changes to a file, run the following command ot unmodify it (the file will return back to what it looked like whne you last committed or initially cloned)
-
 _OLD METHOD_
 ```
 $ git checkout -- <filename>
@@ -423,7 +422,7 @@ $ git checkout -- <filename>
 
 _NEW METHOD_
 ```
-$ git restored --staged <filename>
+$ git restore <filename>
 ```
 
 # 2.5 - Working with Remotes
