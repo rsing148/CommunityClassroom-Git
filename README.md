@@ -1,7 +1,9 @@
 # **TABLE OF CONTENTS**
 
-* [1 - Getting Started](#chapter-1---getting-started)
-	* [1.1 - About Version Control](#11---about-version-control)
+* [1 - Getting Started](#getting-started)
+	* [1.1 - About Version Control](#about-version-control)
+	* [1.2 - What is Git?](#what-is-git)
+	* 
 * [Recording Changes to the Repos]
 * [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
 
@@ -9,9 +11,9 @@
 
 
 
-# CHAPTER 1 - GETTING STARTED
+# GETTING STARTED
 
-# 1.1 - About Version Control
+# About Version Control
 
 * Version control is a system that records changes to a file or set of files over time so that you can recall specific version later. 
 
@@ -57,6 +59,64 @@
 	* Deal well with having several remote repositories they can work with, so you can collaborate with different groups of people in different ways simultaneously within the same project. This allows you to set up several types of workflows that aren't possible in centralized systems, such as hierarchical models.
 
 ![Distributed Version Control Diagram](image-7.png)
+
+# What is Git
+
+* Most systems store information as a list of file-based changes (CVS, Subversion) think of information they stores as a set of files and the changes made to each file over time (`delta-based` version control).
+
+![Storing data as changes to a base version of each file](image-8.png)
+
+* Git thinks of its data as a series of snapshots of a miniature filesystem. With Git, every time you commit, or save the state of your project, Git basically take a picture of what all your files look like at that moment and stores a reference to that snapshot. To be efficient, if files have not changed, Git doesn't store the file again, just a link to the previous identical file it has already stored. Git thinks about its data more like a **stream of snapshots**. 
+
+![Storing data as snapshots of the project over time](image-9.png)
+
+## Nearly Every Operation is Local
+
+* Most operations in Git only need local files and resources to operate. Generally no information is needed from another computer on your network. If you are using a CVCS where most operations have that network latency overhead.
+
+* For example, to browse the history of the project, Git doesn't need to go out to the server to get the history and display it for you - it simply reads it directly from your local database. This means you see the project history almost instantaneously, instead of having to ask a remote server to do it, or pull an older version of the file from the remote server and do it locally.
+
+## Git has Integrity
+
+* Everything in Git is checksummed before it is stored and is then reffered to by that checksum. This means its impossible to change the contents of any file and directory without Git knowing it.
+
+* Git uses SHA-1 has for checksumming. This is a 40-character string composed of hexadecimal characters (0-9 and a-f) and calculated based on the contents of the file or directory structure in Git. Git stores everything in its database by the hash value of its contents.
+
+## Git generally Only Adds Data
+
+* Most of the action you do in Git only `add` data to the Git database. Therefore it is hard to get the system to do anything that is not undoable or to make it erase data in any way.
+
+## The Three States
+
+* Git has three main states that your files can reside in: 
+	* `modified` - Means that you have changed the file but not have committed it to your database yet.
+	* `staged` - Means you have marked a modified file in its current version to go into your next commit snapshot
+	* `committed` - Means that the data is safely stored in your local database
+
+* This leads us to the three main sections of a Git Projects - 
+	* The Working Tree - A single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on the disk for you to use or modify
+	* The Staging Area - Is a file, generally contained in your Git directory, that stores information about what will go into your next commit. Its technical name in Git parlance is the "index".
+	* The Git directory - Is where Git stores the metadata and object database for your project. It is what is copied when you `clone` a repostory from another computer. 
+
+![Working tree, staging area, and Git directory](image-10.png)
+
+* The basic Git workflow works like this:
+	* You modify files in your working tree.
+	* You selectively stage just those changes you want to be part of your next commit, which adds `only` those changes to the staging area.
+	* You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 2.2 - Recording Changes to the Repository
 
