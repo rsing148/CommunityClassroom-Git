@@ -3,7 +3,7 @@
 * [1 - Getting Started](#getting-started)
 	* [1.1 - About Version Control](#about-version-control)
 	* [1.2 - What is Git?](#what-is-git)
-	* 
+	* [1.3 - First Time Git Setup](#first-time-git-setup)
 * [Recording Changes to the Repos]
 * [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
 
@@ -104,6 +104,54 @@
 	* You modify files in your working tree.
 	* You selectively stage just those changes you want to be part of your next commit, which adds `only` those changes to the staging area.
 	* You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.
+
+# First-Time Git Setup
+
+* `git config` - Lets you get and set configuration variables and control all aspects of how Git looks and operates. These variables can be stored in three different places:
+	1. `[path]/etc/gitconfig` file: Contains values applied to every user on the system and all their repositories. If you pass the `--system` to `git config`, it reads and write from this file specifically. Because this is a system configuration file, you would need administrative or superuser privilege to make changes to it. 
+	2. `~/.gitconfig` or `~/.config/git/config` file: Values specific personally to you, the user. You can make Git read and write to this file specifically by passing the `--global` option, and this affects `all` of the respositories you work with on your system.
+	3. `config` file in the Git directory (that is, `.git/config`) of whatever repository you're currently using: Specific to that single repository. You can force Git to read from and write to this file with the `--local` option, but that is in fact the default. You need to be located somewhere in a Git repository for this option to work properly.
+
+* Each level overrides values in the previous level
+
+* You can view all of your settings and where they are coming from using:
+```
+$ git config --list --show-origin
+```
+
+## Your Identity
+
+* This first thing you should do when you install Git is to set your username and email address. This is important because every Git commit uses this information, and it's immutably baked into your commits you start creating:
+```
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+```
+
+## Your Editor
+
+* You can configure the default text editor that will be used when Git needs you to type in a message. If not configured, Git uses your system's default editor.
+```
+$ git config --global core.editor emacs
+```
+
+## Your Default Branch name
+
+* By default, Git will create a branch called `master` when you create a new repository with `git init`. To set `main` as the default branch name do:
+```
+$ git config --global init.defaultBranch main
+```
+
+## Checking your Settings
+
+* `git config --list` - If you want to check your configuration settings
+
+* You may see keys more than once, because Git reads the same key from different files. Git uses the last value for each unique key it sees. 
+
+* `git config <key>` - To check what Git thinks a specific key's value is:
+```
+$ git config user.name
+```
+
 
 
 
