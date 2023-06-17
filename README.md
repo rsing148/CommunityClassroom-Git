@@ -200,127 +200,98 @@ $ git clone https://github.com/libgit2/libgit2 mylibgit
 
 * Git has a number of different transfer protocols you can use (HTTPS, SSH).
 
+# Recording Changes to the Repository
 
-
-
-
-
-
-
-
-
-
-
-# 2.2 - Recording Changes to the Repository {#Chapter2.2}
-
-* _NOTE: Having a `checkout` on your local machine -> working copy of all files in a Git repository_
 * Typically, you'll want to start making changes and committing snapshots of those changes into your repository each time the project reaches a state you want to record.
+
 * Each file in your working directory can be in one of two states:
 	* **Tracked** - Files that were in the last snapshot, as well as any newly staged files; they can be unmodified, modified, or staged. Trackes files are files that Git knows about.
 	* **Untracked** - Everything other than tracked files - Any files in your working directory that were not in your last snapshot and not in your staging area. Git won't start including it in your commit snapshots until you explicitly tell it to do so.
-* As you edit files Git seems them as modified, because you've changed them since your last commit. As you work, you selectively stages these  modified files and then commit all those staged changes, and the cycle repeats.
+
+* When you first clone a repository, all of your files will be tracked and unmodified because Git just checked them out and you haven't edited anything. As you edit files Git seems them as modified, because you've changed them since your last commit. As you work, you selectively stages these  modified files and then commit all those staged changes, and the cycle repeats.
 
 ![image](https://github.com/rsing148/CommunityClassroom-Git/assets/127006601/41a407bb-45fb-4bc2-b53e-d2bde7f91114)
 
 ## Checking the Status of your Files
 
-`git status` - To get which files are in which state. If you run this command directly after a clone, you should see a clean working directory - none of your tracked files are modified. The command tells you which branch you are on, and informs you that it has not diverd from the same branch on the server. 
-
+* `git status` - To get which files are in which state. The command tells you which branch you are on, and informs you that it has not diverged from the same branch on the server. 
 ```
 $ git status
 ```
 
-After you add a file to your project, a simple `README` file. If this file didn't exist before and you run `git status`, you see your untracked file under the "Untracked Files" heading in your status output. 
+* After you add a file to your project, a simple `README` file. If this file didn't exist before and you run `git status`, you see your untracked file under the "Untracked Files" heading in your status output. 
 
 ## Tracking New Files
 
-`git add` - In order to begin tracking a new file. It takes a path or a directory; if its a directory, the command adds all the files in that directory recursively. IT means "add precisely this content to the next commit". For instance, to begin tracking the `README` file run
-
+* `git add` - In order to begin tracking a new file. It takes a path or a directory; if its a directory, the command adds all the files in that directory recursively. IT means "add precisely this content to the next commit". For instance, to begin tracking the `README` file run
 ```
 $ git add README
 ```
 
-If you run status command again, you can see that your README file is now tracked and staged to be committed. You can tell it's staged because it appears under "Changes to be committed" heading. If you commit at this point, the version of the file at tht time you ran `git add` is what will be in the subsequent snapshot. 
+* If you run status command again, you can see that your README file is now tracked and staged to be committed. You can tell it's staged because it appears under "Changes to be committed" heading. If you commit at this point, the version of the file at that time you ran `git add` is what will be in the subsequent snapshot. 
 
 ## Staging Modified Files
 
-Lets change a file that was already tracked. If you change a previously tracked file called CONTRIBUTING.md and then run your git status command again, you will see the file appears unders a section "Changes not staged for commit" - which means that a file that is tracked has been modified in the working directory but not yet staged. To stage it, you run the `git add` command.  After staging the file if we make another change to the same file, it will list as both staged and unstanged. It turns out that Git stages a file exactly as it wis when you run the `git add` command. If you commit now, the version of `CONTRIBUTING.md` as it was when you last ran the `git add` command is how it will go into the commit, not the version of the file as it looks in your working directory when you run `git commit`. If you modify a file after you run `git add`, you have to run `git add` again to stage the latest version fo the file.
+* If you change a previously tracked file called `CONTRIBUTING.md` and then run your git status command again, you will see the file appears unders a section "Changes not staged for commit" - which means that a file that is tracked has been modified in the working directory but not yet staged. To stage it, you run the `git add` command.  After staging the file if we make another change to the same file, it will list as both staged and unstanged. It turns out that Git stages a file exactly as it wis when you run the `git add` command. If you commit now, the version of `CONTRIBUTING.md` as it was when you last ran the `git add` command is how it will go into the commit, not the version of the file as it looks in your working directory when you run `git commit`. If you modify a file after you run `git add`, you have to run `git add` again to stage the latest version fo the file.
 
 ## Short Status
 
-* `git status -s` command shows changes in more compact way. The output has 2 columns - The left-hand column indicates the status of the staging area and the right-hand column indicates the status of the working tree.
+* `git status --short` command shows changes in more compact way. The output has 2 columns - The left-hand column indicates the status of the staging area and the right-hand column indicates the status of the working tree.
 
 * Symbols denote:
 	* `??` - Untracked files
 	* `A` - files that have been added to staging area
- 	* `M` - Modifid files
-    * `MM` - Files that have been staged and unstaged changes
+	* `M` - Modified files
+	* `MM` - Modified, staged and again modified files (so there are changes that are both staged and unstaged)
 
 ## Ignoring File
 
-* For files which you don't want Git to automatically add or even show as being untracked (such as log files or files produced by the build system - You can create afile listing patterns to match them names `.gitignore`.
+* For files which you don't want Git to automatically add or even show as being untracked (such as log files or files produced by the build system) - You can create a file listing patterns to match them names `.gitignore`.
 
 * Rules for the patterns you can put in the `.gitignore` file are :
-
 	* Blank line(s) are starting with `#` are ignored.
 	* Standard glob patterns work, and will be applied recursively throughout the entire working tree.
 	* You can start patterns with a forward slash (`/`) to avoid recursively
 	* You can end patterns with a forward slash (`/`) to specify a directory
 	* You can negate a pattern by starting it with an exclamation point (`!`).
 
-* Glob patterns are simplified regular expressions that shells use. 
-
+* Glob patterns are simplified regular expressions that shells use (Refer [this](https://github.com/github/gitignore) for Github `.gitignore` file templates): 
 	* An asterisk (`*`) matches zero or more characters
 	* `[abc]` matches any character inside the brackets (in this case a, b, or c)
 	* `?` - matches a single character
 	* Brackets enclosing characters separated by a hyphen (`[0-9]`) matches any character between them (in this case 0 through 9).
 	* You can use 2 * to match nested directories (`a/**/z` would match `a/z`, `a/b/z`, `a/b/c/z` and so on).
 
-	Its is also possible to have additional `.gitignore` files in subdirectories of tthe repository. The rules in these nested `.gitignore` files apply only to the files under the directory where they are located. 
+* Its is also possible to have additional `.gitignore` files in subdirectories of tthe repository. The rules in these nested `.gitignore` files apply only to the files under the directory where they are located. 
 
 ## Viewing Your Staged and Unstaged Changes
 
-* When you wnat to know exactly what you changed, not just which files were changed - you can use the `git diff` command. 
+* `git diff` - When you wnat to know exactly what you changed, not just which files were changed. It shows you the exact lines added and removed - the patch.
 
-* It is used to get information about:
-
-	* What have you changed but not yet staged?
-	* What have you staged that you are about to commit
-
-* `git status` answers those questions very generally by listing the file names, `git diff` shows you the exact lines added and removed - the patch.
-
-* To see what you've changed but not yet staged, type `git diff` with no argument
-
+* To see what you've changed but not yet staged, type `git diff` with no argument. The command compares what is in your working directory with what is in your staging area. The result tell you the chagnes you've made that you haven't yet staged.
 ```
 $ git diff
 ```
 
-The command compares what is in your working directory with what is in your staging area. The result tell you the chagnes you've made that you haven't yet staged.
-
 * If you want to see what you've staged that will go into your next commit use the command `git diff --staged`. This command compares your staged changed to your last commit.
-
 ```
-$ git diff staged
+$ git diff --staged
 ```
 
 * `git diff` shows you only the changes that are still unstaged, not the changed made since your last commit. If you've staged all of your changes, it will give no output.
-
-* You can also use `git diff` to see the changes in the file that are staged and the changes that are unstaged. 
-
-* You can run `git difftool` instead of `git diff` to view any diffs in software like vimdiff.
 
 ## Committing Your Changes
 
 * Anything that is unstaged (any files you have created or modified that you haven't run `git add` on since you edited them) won't go into this commit. They will stay as modified files on your disk.
 
-* Type `git commit` would open an editor of choice and will show a default template of a commit message, which is commented out and will be ignored (using #). You can add your message after this, and keep this intact so that it will help you remember what you're committing. You can put `-v` option to the `git commit` command for add the diff of your change in the editor.
-* You can use `-m` flag with `commit` command so that you can type your commit message inline with `commit` command.
+* Type `git commit` would open an editor of choice and will show a default template of a commit message containing the output of `git status`, which is commented out and will be ignored (using #). You can add your message after this, and keep this intact so that it will help you remember what you're committing. You can put `-v` option to the `git commit` command for add the diff of your change in the editor.
 
+* You can use `-m` flag with `commit` command so that you can type your commit message inline
 ```
 $ git commit -m "Story 182: Fix benchmarks for speed
 ```
 
-* Everytime you perform a commit, you are recording a snapshot of your project 
+* You can see that the commit has given some output about itself - which branch you committed to (`master`), what SHA-1 checkshum the commit has, how many files were changed, and statistics about line added and in the commit.
 
 ## Skipping the Staging Area
 
@@ -328,36 +299,29 @@ $ git commit -m "Story 182: Fix benchmarks for speed
   
 ## Removing Files
 
-* To remove a file from Git, you have to remove it from your tracked files and then commit. This can be done using `git rm` command, and also removed the file from your working directory so you don't see it as an untracked file the next time around. 
+* To remove a file(s) from Git, you have to remove it from your tracked files and then commit. This can be done using `git rm` command, and also removed the file from your working directory so you don't see it as an untracked file the next time around. You can pass files, directories, and file-glob patterns.
 
 * If you simply remove the file from your working directory, it shows up under the "Changes not staged for commit" (unstaged) area of `git status`.
 
+![Image](image-11.png)
+
 * But if you run `git rm` it stages the file's removal. The next time you commit, the file will be gone and no longer tracked. If you modifed the file or had already added it to the staging area, you much force the removal with the `-f` option. 
 
-* You may want to keep the file on your hard drive but not have Git track it anymore. This is useful if you forget to add something to your `.gitignore` file and accidentally staged it. To do this, use the `--cached` option:
+![Image](image-12.png)
 
+* You may want to keep the file in your working tree but remove it from your staging area (not have Git track it anymore). This is useful if you forget to add something to your `.gitignore` file and accidentally staged it. To do this, use the `--cached` option:
 ```
 $ git rm --cached README
 ```
 
-* You can pass files, directories, and file-glob patterns to the `git rm` command. 
-
-```
-$ git rm log/\*.log
-```
-
-This command removes all files that the `.log` extension in the `log/` directory. (Backslash (`\`) in front of the `*`).
-
 ## Moving Files
 
-* If you want to rename a file in Git you can run 
-
+* `git mv` - If you want to rename a file in Git.
 ```
 $ git mv file_from file_to
 ```
 
-This is equivalent to running something like:
-
+* Git recognises that a file has been rename. If you run `git status`, it will show you that a file has been renamed. This is equivalent to running something like:
 ```
 $ mv file_from file_to
 $ git rm file_from
