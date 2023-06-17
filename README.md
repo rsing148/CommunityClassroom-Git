@@ -4,6 +4,7 @@
 	* [1.1 - About Version Control](#about-version-control)
 	* [1.2 - What is Git?](#what-is-git)
 	* [1.3 - First Time Git Setup](#first-time-git-setup)
+	* [1.4 - Getting Help](#getting-help)
 * [Recording Changes to the Repos]
 * [2.3 - Viewing the Commit History](#23---viewing-the-commit-history)
 
@@ -150,6 +151,18 @@ $ git config --global init.defaultBranch main
 * `git config <key>` - To check what Git thinks a specific key's value is:
 ```
 $ git config user.name
+```
+
+# Getting Help
+
+* `git help <verb>` - You can get the comprehensive manual page (manpage) help for any of the Git commands by:
+```
+$ git help config
+```
+
+* If you just need a quick refresher on the available options of a Git command, use `-h` option
+```
+$ git add -h
 ```
 
 
