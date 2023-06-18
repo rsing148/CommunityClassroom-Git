@@ -36,13 +36,13 @@
 	* Cons:
 		* Single point of failure - Since the entire history of the project is in a single place, you risk losing everything.
 
+		* Difficult to administer as each contributor has its own database
+
 ![Local Version Control Diagram](image-5.png)
 
 ## Centralized Version Control Systems
 
-* People found the need to collaborate with developers on other systems. For example, CVS, Subversion, Peforce.
-
-* They have a single server that contains all the versioned files, and a number of clients that check out files from that central place. 
+* People found the need to collaborate with developers on other systems. For example, CVS, Subversion, Peforce. They have a single server that contains all the versioned files, and a number of clients that check out files from that central place. 
 
 * Pros:
 	* Everyone knows to a certain degree what everyone else on the project is doing.
@@ -61,7 +61,6 @@
 
 * Pros:
 	* If any server dies, and these system were collaborating via that server, any of the client repositories can be copied back up to the server to restore it. Every clone is really a full backup of all the data. For example, Git, Mercurial, Bazaar.
-	* Deal well with having several remote repositories they can work with, so you can collaborate with different groups of people in different ways simultaneously within the same project. This allows you to set up several types of workflows that aren't possible in centralized systems, such as hierarchical models.
 
 ![Distributed Version Control Diagram](image-7.png)
 
@@ -77,9 +76,9 @@
 
 ## Nearly Every Operation is Local
 
-* Most operations in Git only need local files and resources to operate. Generally no information is needed from another computer on your network. If you are using a CVCS where most operations have that network latency overhead.
+* Most operations in Git only need local files and resources to operate. Generally no information is needed from another computer on your network. Whereas if you are using a CVCS, most operations have that network latency overhead.
 
-* For example, to browse the history of the project, Git doesn't need to go out to the server to get the history and display it for you - it simply reads it directly from your local database. This means you see the project history almost instantaneously, instead of having to ask a remote server to do it, or pull an older version of the file from the remote server and do it locally.
+* For example, to browse the history of the project, Git doesn't need to go out to the server to get the history and display it for you - it simply reads it directly from your local database. This means you see the project history almost instantaneously, instead of having to ask a remote server to do it.
 
 ## Git has Integrity
 
@@ -94,9 +93,9 @@
 ## The Three States
 
 * Git has three main states that your files can reside in: 
-	* `modified` - Means that you have changed the file but not have committed it to your database yet.
-	* `staged` - Means you have marked a modified file in its current version to go into your next commit snapshot
-	* `committed` - Means that the data is safely stored in your local database
+	* `modified` - Means that you have changed the file but not have committed it to your database yet. If a file has changed since it was checked out but has not been staged, it is modified
+	* `staged` - Means you have marked a modified file in its current version to go into your next commit snapshot. If a file has been modified and was added to the staging area, it is staged. 
+	* `committed` - Means that the data is safely stored in your local database. If a particular version of a file is in the Git directory, it is considered committed.
 
 * This leads us to the three main sections of a Git Projects - 
 	* The Working Tree - A single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on the disk for you to use or modify
@@ -216,12 +215,15 @@ $ git clone https://github.com/libgit2/libgit2 mylibgit
 
 ## Checking the Status of your Files
 
-* `git status` - To get which files are in which state. The command tells you which branch you are on, and informs you that it has not diverged from the same branch on the server. 
-```
-$ git status
-```
+* `git status` - To get which files are in which state. 
+
+![Git status](image-23.png)
+
+* This means that you have a clean working directory; in other words, none of your tracked files are modified. Git also doesn't see any untracked files, or they would be listed here. The command tells you which branch you are on, and informs you that it has not diverged from the same branch on the server.
 
 * After you add a file to your project, a simple `README` file. If this file didn't exist before and you run `git status`, you see your untracked file under the "Untracked Files" heading in your status output. 
+
+![Git status after adding new Untracked File](image-24.png)
 
 ## Tracking New Files
 
@@ -232,13 +234,29 @@ $ git add README
 
 * If you run status command again, you can see that your README file is now tracked and staged to be committed. You can tell it's staged because it appears under "Changes to be committed" heading. If you commit at this point, the version of the file at that time you ran `git add` is what will be in the subsequent snapshot. 
 
+![Git status after staging new untracked file](image-25.png)
+
 ## Staging Modified Files
 
-* If you change a previously tracked file called `CONTRIBUTING.md` and then run your git status command again, you will see the file appears unders a section "Changes not staged for commit" - which means that a file that is tracked has been modified in the working directory but not yet staged. To stage it, you run the `git add` command.  After staging the file if we make another change to the same file, it will list as both staged and unstanged. It turns out that Git stages a file exactly as it wis when you run the `git add` command. If you commit now, the version of `CONTRIBUTING.md` as it was when you last ran the `git add` command is how it will go into the commit, not the version of the file as it looks in your working directory when you run `git commit`. If you modify a file after you run `git add`, you have to run `git add` again to stage the latest version fo the file.
+* If you change a previously tracked file called `CONTRIBUTING.md` and then run your `git status` command again, you will see the file appears unders a section "Changes not staged for commit" - which means that a file that is tracked has been modified in the working directory but not yet staged. 
+
+![Modified tracked file](image-26.png)
+
+To stage it, you run the `git add` command. 
+
+![Alt text](image-27.png)
+
+After staging the file if we make another change to the same file, it will list as both staged and unstaged. It turns out that Git stages a file exactly as it is when you run the `git add` command. If you commit now, the version of `CONTRIBUTING.md` as it was when you last ran the `git add` command is how it will go into the commit, not the version of the file as it looks in your working directory when you run `git commit`. 
+
+![Modified already staged file](image-28.png)
+
+If you modify a file after you run `git add`, you have to run `git add` again to stage the latest version fo the file.
 
 ## Short Status
 
 * `git status --short` command shows changes in more compact way. The output has 2 columns - The left-hand column indicates the status of the staging area and the right-hand column indicates the status of the working tree.
+
+![git status -s](image-29.png)
 
 * Symbols denote:
 	* `??` - Untracked files
