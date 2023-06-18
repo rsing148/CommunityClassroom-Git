@@ -785,3 +785,107 @@ $ git stash --patch
 $ git stash branch testchanges
 ```
 
+# Advanced Merging
+
+## Merge Conflicts
+
+* Try to make sure your working directory is clean before doing a merge that may have conflicts. If you have work in progress, either commit it to a temporary branch or stash it. This makes it so that you can undo anything you try here. If you have unsaved changes in your working directory when you try a merge, some of these tips may help you preserver that work.
+
+* Example - Let's say we have a simple Ruby file that prints "Hello World".
+
+	![Ruby File](image-14.png)
+
+	* We create a new branch named `whitespace` and proceed to change all the Unix line endings to DOS line endings, essentially changing every line of the file, but just the whitespace. Then we change the "hello world" to "hello mundo".
+
+	![Changes to Ruby File](image-15.png)
+
+	* Now we switch back to our `master` branch and add some documentation for the function.
+
+	![Changes to Ruby File in different branch](image-16.png)
+
+	* Now when we try to more in our `whitespace` branch, we will get conflicts because of the whitespace changes.
+
+	![Merge Conflict](image-17.png)
+
+## Aborting a Merge
+
+* `git merge --abort` - Back out of the merge if conflicts were unexpected. It tries to revert back to your state before you ran the merge, unless you had unstashed, uncommitted changes in your working directory when you ran it.
+```
+$ git merge --abort
+```
+
+* If you want to start over, you can also run `git reset --hard HEAD` and your repository will be back to the last committed state. Any uncommitted work will be lost
+
+## Ignoring Whitespaces
+
+* `-Xignore-all-space` - Ignore whitespaces completely when comparing lines
+* `-Xignore-space-change` - Treats sequences of one or more whitespace characters as equivalent
+```
+$ git merge -Xignore-space-change whitepsace
+```
+
+* This is useful in situations when someone reformats everythings from spaces to tabs or vice-versa
+
+## Manual File Re-Merging
+
+
+## Undoing Merges
+
+* Lets say you are working on a topic branch, and accidentally merged it into `master`, and now your commit history looks like this:
+
+![Accidental merge commit](image-18.png)
+
+### Fix the references
+
+* If the unwanted merge commit only exists on your local repository, the easiest and best solution is to move the branches so that they point where you want them to. If you follow `git merge` with `git reset --hard HEAD~`, thsi will reset the branch pointers so they look like this:
+
+![History after `git reset --hard HEAD~`](image-19.png)
+
+* The `reset --hard` goes through three steps:
+	* Move the branch HEAD points to. 
+	* Make the index look like HEAD
+	* Make the working directory look like the index
+
+* This can be problematic with a shared repository. If other people have the commits you are rewriting, you should probably avoid `reset`. This approach won't work if any other commits have been created since the merge, moving the refs would effectively lose those changes.
+
+### Reverse the commit
+
+* Git gives you the option of making a new commit which undoes all the changes from an existing one. 
+```
+$ git revert -m 1 HEAD
+```
+
+* The `-m 1` flag indicates which parent in the "mainline" and should be kept. When you invoke a merge into `HEAD`, the new commit has two parents, the first one is `HEAD` and the second is the top of the branch being merged in. If we want to undo all the changes introduced by merging in parent #2, while keeping all the content from parent #1. The history with the rever commit looks like this:
+
+![History after `git rever -m 1`](image-20.png)
+
+* The new commit `^M` has exactly the same contents as C6, so starting from here its as if the merge never happened, except that the now un-merged  commits are still in `HEAD`'s history, so Git things that the branch `topic` is already merged. If you add work to `topic` and merge again, Git will only bring in the changes since the reverted merge.
+
+![History with bad merge](image-21.png)
+
+* The best way around this is to un-revert the original merge, since now you want to brign in the changes that were reverted out, then create a new merge commit.
+```
+$ git rever ^M
+$ git merge topic
+```
+
+![History after re-merging a reverted merge](image-22.png)
+
+* M and ^M cancel out, and ^^M effectively merged in the changes from C3 and C4, and C8 merges in the changes from C7, so now `topic` is fully merged.
+
+## Other Types of Merges
+
+### Ours or Theirs Preference
+
+* By default, when Git sees a conflict between two branches being merged, it will add merge conflict markers into your code and mark the file as conflictedd and let your resolve it. If you would prefer for Git to simply choose a specific side and ignore the other side instead of letting you manually resolved the conflict, you can pass the `merge` command either a `-Xours` or `-Xtheirs`. If Git sees this, it will not add conflict markers. Anny differences that are mergable, it will merge. Any differences that conflict, it will simply choose the side you specify the while, including binary files.
+```
+$ git merge -Xours mundo
+```
+
+* Instead of getting conflict markers in the file with "hello mundo" on one side and "hola world" on the other, it will simply pick "hola world". All the other non-conflicting changes on that branch are merged successfully in.
+
+* If you dont want to have Git even try to merge changes from the other side in, use the "ours" merge strategy. This will basically do a fake merge. It will record a new merge commit with both branches as parents, but it will not even look at that branch you are merging in. It will simply record as the result of the merge the exact code in your current branch. This can be verified by seeing that there is no difference between the branch we were on and the result of the merge. 
+```
+$ git merge -s ours mundo
+$ git diff HEAD HEAD~
+```
