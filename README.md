@@ -350,16 +350,14 @@ $ git add file_to
 
 # Viewing the Commit History
 
-* `git log` - To view the several commits made. By default with no arguments it will list the commits made in that repository in reverse chronological order (most recent commits will show up first) along with the SHA-1 checksum, the author's name and email, the date written and the commit message
+* `git log` - To view the several commits made. By default with no arguments it will list the commits made in that repository in reverse chronological order (most recent commits will show up first).
 ```
 $ git log
 ```
 
 * `-p` or `--patch` - Shows the difference (the `patch` output) introduced in each commit. It shows the same information but with a diff directly following each entry. This is very helpful for code review or to quickly browser what happened during a series of commits that a collaborator has added. 
-
-* `-2` - Limits the number of log entries displayed to 2
 ```
-$ git log -p -2
+$ git log -p
 ```
 
 * `--stat` - See some abbreviated stats for each commit. It prints below each commit a list of of modified files, how many files were changed, and how many lines in those files are added and removed. It also puts a summary of the information at the end. 
