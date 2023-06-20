@@ -282,6 +282,8 @@ If you modify a file after you run `git add`, you have to run `git add` again to
 	* Brackets enclosing characters separated by a hyphen (`[0-9]`) matches any character between them (in this case 0 through 9).
 	* You can use 2 * to match nested directories (`a/**/z` would match `a/z`, `a/b/z`, `a/b/c/z` and so on).
 
+![Example Gitignore file](image-33.png)
+
 * Its is also possible to have additional `.gitignore` files in subdirectories of tthe repository. The rules in these nested `.gitignore` files apply only to the files under the directory where they are located. 
 
 ## Viewing Your Staged and Unstaged Changes
@@ -293,10 +295,14 @@ If you modify a file after you run `git add`, you have to run `git add` again to
 $ git diff
 ```
 
+![git diff](image-34.png)
+
 * If you want to see what you've staged that will go into your next commit use the command `git diff --staged`. This command compares your staged changed to your last commit.
 ```
 $ git diff --staged
 ```
+
+![git diff --staged](image-35.png)
 
 * `git diff` shows you only the changes that are still unstaged, not the changed made since your last commit. If you've staged all of your changes, it will give no output.
 
@@ -306,10 +312,14 @@ $ git diff --staged
 
 * Type `git commit` would open an editor of choice and will show a default template of a commit message containing the output of `git status`, which is commented out and will be ignored (using #). You can add your message after this, and keep this intact so that it will help you remember what you're committing. You can put `-v` option to the `git commit` command for add the diff of your change in the editor.
 
+![git commit](image-36.png)
+
 * You can use `-m` flag with `commit` command so that you can type your commit message inline
 ```
 $ git commit -m "Story 182: Fix benchmarks for speed
 ```
+
+![git commit -m](image-37.png)
 
 * You can see that the commit has given some output about itself - which branch you committed to (`master`), what SHA-1 checkshum the commit has, how many files were changed, and statistics about line added and in the commit.
 
@@ -340,6 +350,8 @@ $ git rm --cached README
 ```
 $ git mv file_from file_to
 ```
+
+![git mv](image-38.png)
 
 * Git recognises that a file has been rename. If you run `git status`, it will show you that a file has been renamed. This is equivalent to running something like:
 ```
