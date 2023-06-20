@@ -450,17 +450,19 @@ $ git restore <filename>
 * `git remote` - To see which remote servers you have configured. It lists the shortnames of each remote handle you've specified. If you've cloned your repository, you should at least see `origin` - that is the default name Git gives to the server you cloned from.
 
 * `-v` option - Shows you all the URLs that Git has stored for the shortname to be used when reading and writing to that remote, or all the URLs in case of multiple remotes
-```
-$ git remote -v
-```
+![git remote -v command](image-30.png)
 
 ## Adding Remote Repositories
 
 * `git remote add <shortname> <url>` - To add a new remote Git repository as a shortname you can reference easily
 
+![Git remote add url command](image-31.png)
+
 ## Fetching and Pulling from your Remotes
 
 * `git fetch <remote>` - Get all the data that the remote project has but you don't have yet. After you do this, you should have references to all the branches from that remote. The output of this command will show where each branch of the remote is accessible locally. You can merge it into one of your branches, or you can check out a local branch at that point if you want to inspect it.
+
+![git fetch command](image-32.png)
 
 * If you clone a repository, the command automatically adds that remote repository under the name 'origin'. So `git fetch origin` fetches any new work that has been pushed to that server since you cloned (or last fetched from) it. It only downloads the data to your local repository - it doesn't automatically merge it with any of the work or modify what you're currently working on. You have to merge it manually into your work when you are ready.
 
@@ -468,7 +470,7 @@ $ git remote -v
 
 ## Pushing to your Remotes
 
-* When you have your project that you want to share, you have to push it upstream. The command is `git push <remote> <branch>`
+* `git push <remote> <branch>` - When you have your project that you want to share, you have to push it upstream. 
 ```
 $ git push origin master
 ```
@@ -477,11 +479,11 @@ $ git push origin master
 
 ## Inspecting a Remote
 
-* `git remote show <remote>` - Show information about a particular remote. It lists the URL for the remote repository as well as the tracking branch information. If you are on the master branch and you run `git pull`, it will automatically merge the remote's `master` branch into the local one after it has been fetched. It also lists all the remote references it has pulled down. It also shows which branch is automatically pushed to when you run `git push` while on certain branches. 
+* `git remote show <remote>` - Show information about a particular remote. It lists the URL for the remote repository as well as the tracking branch information. If you are on the master branch and you run `git pull`, it will automatically merge the remote's `master` branch into the local one after it has been fetched. It also lists all the remote references it has pulled down. It also shows which branch is automatically pushed to when you run `git push` while on certain branches. It also show you which remotes branches on the server you don't have yet, which remote branch you have that have been removed from the srever, and multiple local branches that are able to merge automatically with their remote-tracking branch when you run `git pull`.
 
 ![Git Remote Show Image](image-13.png)
 
-# Renaming and Removing Remotes
+##  Renaming and Removing Remotes
 
 * `git remote rename <original_name> <new_name>` - Rename a remote's shortname from original_name to new_name.
 
