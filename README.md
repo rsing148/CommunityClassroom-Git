@@ -411,11 +411,13 @@ $ git log -- path/to/file
 $ git commit --amend
 ```
 
+* It basically replaces the old commit with a new commit. It's as if the previous commit never happened, and it won't show up in your repository history.
+
 * Only amend commits that are still local and have not been pushed somewhere. Amending previously pushed commits and force pushing the branch will cause problems for your collaborators.
 
 ## Unstaging a Staged File
 
-* Let's say you've changed two files and want to commit them as two separate changes, but you accidentally type `git add *` and stage both of them. To unstage a file (file will become just a modified file) you can run the command:
+* Let's say you've changed two files and want to commit them as two separate changes, but you accidentally type `git add *` and stage both of them. To unstage a file (file will become just a modified file) you can run the command :
 _OLD METHOD_
 ```
 $ git reset HEAD <filename>
