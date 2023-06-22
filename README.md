@@ -461,8 +461,8 @@ $ git restore <filename>
 
 * `git remote` - To see which remote servers you have configured.
 * _NOTE_: `origin` - that is the default name Git gives to the server you cloned from.
+* `-v` option - Shows you all the URLs along with the shortnames to be used for reading and writing to that remote.
 
-* `-v` option - Shows you all the URLs that Git has stored for the shortname to be used when reading and writing to that remote, or all the URLs in case of multiple remotes
 ![git remote -v command](image-30.png)
 
 ## Adding Remote Repositories
